@@ -3,7 +3,9 @@
 	"package": "net.ds.megamod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"EndPortalMixin",
+		"EnderEyeMixin",
+		"NetherPortalMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

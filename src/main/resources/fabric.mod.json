@@ -3,9 +3,9 @@
 	"id": "megamod",
 	"version": "${version}",
 	"name": "Mega Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A Util Mod for Multiplayer Servers.",
 	"authors": [
-		"Me!"
+		"Destruction Studio"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
