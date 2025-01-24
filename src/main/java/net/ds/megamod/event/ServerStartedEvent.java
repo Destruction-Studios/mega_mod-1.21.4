@@ -9,4 +9,5 @@ public class ServerStartedEvent implements ServerLifecycleEvents.ServerStarted{
     public void onServerStarted(MinecraftServer minecraftServer) {
         MegaMod.serverStarted(minecraftServer);
     }
+
 }

@@ -2,12 +2,19 @@ package net.ds.megamod;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import net.ds.megamod.config.ModConfigs;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.ds.megamod.combatLog.IPlayerDataSaver;
+import net.ds.megamod.combatLog.CombatTagDataEditor;
+import net.ds.megamod.config.ModConfig;
 import net.ds.megamod.util.Utils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+
+import java.util.Collection;
 
 public class ModCommands {
     private static int executeRulesCommand(CommandContext<ServerCommandSource> context) {
@@ -63,13 +70,44 @@ public class ModCommands {
     private static int executeReloadConfig(CommandContext<ServerCommandSource> context) {
         sendFeedback(context, "Reloading Config...", true);
 
-        ModConfigs.reloadConfig();
+        ModConfig.load();
 
         sendFeedback(context, "Reloaded Config!", true);
         return 1;
     }
-    private static int executeGetConfig(CommandContext<ServerCommandSource> context) {
-        sendFeedback(context, ModConfigs.getFileContents(), false);
+
+    private static int executeSetCombat(CommandContext<ServerCommandSource> context) {
+        try {
+            boolean combatEnabled = BoolArgumentType.getBool(context, "enabled");
+            Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "players");
+            for (ServerPlayerEntity player : players) {
+                sendFeedback(context, "Set combat for " + player.getDisplayName().getString() + " to " + combatEnabled, true);
+                if (combatEnabled) {
+                    CombatTagDataEditor.placeInCombat((IPlayerDataSaver) player);
+                } else {
+                    CombatTagDataEditor.setValues((IPlayerDataSaver) player, 0, true);
+                }
+            }
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        return 1;
+    }
+
+    private static int executeGetCombat(CommandContext<ServerCommandSource> context) {
+        try {
+            ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append("In Combat: §a").append(CombatTagDataEditor.getCombat((IPlayerDataSaver) player)).append("§r\n");
+            stringBuilder.append("Combat Time: §c").append(CombatTagDataEditor.getCombatTime((IPlayerDataSaver) player)).append("§r");
+
+            sendFeedback(context, stringBuilder.toString(), false);
+        } catch (CommandSyntaxException e) {
+            e.printStackTrace();
+        }
+
         return 1;
     }
 
@@ -81,15 +119,22 @@ public class ModCommands {
 
             commandDispatcher.register(CommandManager.literal("megamod")
                     .requires(source -> source.hasPermissionLevel(4))
+                    .then(CommandManager.literal("combat")
+                            .then(CommandManager.literal("set").then(CommandManager.argument("players", EntityArgumentType.players()).then(CommandManager.argument("enabled", BoolArgumentType.bool()).executes(ModCommands::executeSetCombat))))
+                            .then(CommandManager.literal("get").then(CommandManager.argument("player", EntityArgumentType.player()).executes(ModCommands::executeGetCombat)))
+                    )
                     .then(CommandManager.literal("motd")
                             .then(CommandManager.literal("reload").executes(ModCommands::executeReloadMOTD))
-                            .then(CommandManager.literal("get").executes(ModCommands::executeGetMOTD)))
+                            .then(CommandManager.literal("get").executes(ModCommands::executeGetMOTD))
+                    )
                     .then(CommandManager.literal("rules").then(CommandManager.literal("reload").executes(ModCommands::executeReloadCommand)))
                     .then(CommandManager.literal("pvp").then(CommandManager.argument("enabled", BoolArgumentType.bool()).executes(ModCommands::executePvpToggle)))
                     .then(CommandManager.literal("config")
                             .then(CommandManager.literal("reload").executes(ModCommands::executeReloadConfig))
-//                            .then(CommandManager.literal("get").executes(ModCommands::executeGetConfig)))
-            ));
+//                            .then(CommandManager.literal("get").executes(ModCommands::executeGetConfig))
+                    )
+
+            );
         }));
 
     }

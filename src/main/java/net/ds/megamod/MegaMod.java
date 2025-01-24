@@ -1,8 +1,9 @@
 package net.ds.megamod;
 
 
-import net.ds.megamod.config.ModConfigs;
+import net.ds.megamod.config.ModConfig;
 import net.ds.megamod.event.ServerStartedEvent;
+import net.ds.megamod.event.ServerStoppingEvent;
 import net.ds.megamod.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -19,13 +20,13 @@ public class MegaMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModConfigs.init();
+		Utils.getOrCreateConfigFolder();
+		ModConfig.CONFIG = ModConfig.load();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
+		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingEvent());
 
 		ModCommands.init();
-
-		Utils.getOrCreateConfigFolder();
 
 		LOGGER.info("MegaMod Initialized");
 	}

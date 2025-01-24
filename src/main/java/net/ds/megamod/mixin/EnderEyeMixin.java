@@ -1,6 +1,6 @@
 package net.ds.megamod.mixin;
 
-import net.ds.megamod.config.ModConfigs;
+import net.ds.megamod.config.ModConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnderEyeItem;
 import net.minecraft.item.ItemUsageContext;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class EnderEyeMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void injectUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (!ModConfigs.CAN_THROW_EYE) {
+        if (!ModConfig.Config.enderEyesEnabled) {
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;
@@ -24,7 +24,7 @@ public class EnderEyeMixin {
     }
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
     public void injectUseOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if (!ModConfigs.END_PORTAL_ENABLED) {
+        if (!ModConfig.Config.endPortalsEnabled) {
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;

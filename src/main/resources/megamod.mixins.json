@@ -1,13 +1,17 @@
 {
-	"required": true,
-	"package": "net.ds.megamod.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"EndPortalMixin",
-		"EnderEyeMixin",
-		"NetherPortalMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "net.ds.megamod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EnderEyeMixin",
+    "EndPortalMixin",
+    "ModEntityDamageMixin",
+    "ModEntityDataSaverMixin",
+    "ModServerTickMixin",
+    "NetherPortalMixin",
+    "PlayerLeaveMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
