@@ -17,17 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TridentItem.class)
 public class TridentItemMixin {
-    @Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
-    public void injectOnStopUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfoReturnable<Boolean> cir) {
-        if (user instanceof PlayerEntity playerEntity) {
-            MegaMod.LOGGER.info("Used trident");
-            float f = EnchantmentHelper.getTridentSpinAttackStrength(stack, playerEntity);
-            if ((f > 0.0F && !playerEntity.isTouchingWaterOrRain()) || (CombatTagDataEditor.getCombat((IPlayerDataSaver) playerEntity) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.RiptideTridents)) {
-                MegaMod.LOGGER.info("Trident Disabled returning");
-                cir.setReturnValue(false);
-                cir.cancel();
-                return;
-            }
-        }
-    }
+//    @Inject(method = "onStoppedUsing", at = @At("HEAD"), cancellable = true)
+//    public void injectOnStopUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfoReturnable<Boolean> cir) {
+//        if (user instanceof PlayerEntity playerEntity) {
+//            MegaMod.LOGGER.info("Used trident");
+//            float f = EnchantmentHelper.getTridentSpinAttackStrength(stack, playerEntity);
+//            if ((f > 0.0F && !playerEntity.isTouchingWaterOrRain()) || (CombatTagDataEditor.getCombat((IPlayerDataSaver) playerEntity) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.RiptideTridents)) {
+//                MegaMod.LOGGER.info("Trident Disabled returning");
+//                cir.setReturnValue(false);
+//                cir.cancel();
+//                return;
+//            }
+//        }
+//    }
 }

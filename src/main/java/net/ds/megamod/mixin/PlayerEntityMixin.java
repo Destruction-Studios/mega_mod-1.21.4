@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
-    @Inject(method = "useRiptide", at = @At("HEAD"), cancellable = true)
-    public void injectUseRiptide(int riptideTicks, float riptideAttackDamage, ItemStack stack, CallbackInfo ci) {
-        if (CombatTagDataEditor.getCombat((IPlayerDataSaver) this) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.RiptideTridents) {
-            MegaMod.LOGGER.info("Trident disabled");
-            ci.cancel();
-            return;
-        }
-    }
+//    @Inject(method = "useRiptide", at = @At("HEAD"), cancellable = true)
+//    public void injectUseRiptide(int riptideTicks, float riptideAttackDamage, ItemStack stack, CallbackInfo ci) {
+//        if (CombatTagDataEditor.getCombat((IPlayerDataSaver) this) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.RiptideTridents) {
+//            MegaMod.LOGGER.info("Trident disabled");
+//            ci.cancel();
+//            return;
+//        }
+//    }
 }
