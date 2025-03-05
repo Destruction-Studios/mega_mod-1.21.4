@@ -1,7 +1,6 @@
 package net.ds.megamod;
 
-
-import net.ds.megamod.config.ModConfig;
+import net.ds.megamod.config.MegaModConfig;
 import net.ds.megamod.event.ServerStartedEvent;
 import net.ds.megamod.event.ServerStoppingEvent;
 import net.ds.megamod.util.Utils;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class MegaMod implements ModInitializer {
 	public static final String MOD_ID = "megamod";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
 	private static String rules;
 	private static MinecraftServer server;
 	private static boolean serverStartHandled = false;
@@ -21,7 +21,7 @@ public class MegaMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		Utils.getOrCreateConfigFolder();
-		ModConfig.CONFIG = ModConfig.load();
+		MegaModConfig.init();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
 		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingEvent());
@@ -59,7 +59,6 @@ public class MegaMod implements ModInitializer {
 		server = newServer;
 		handleServerStart(newServer);
 	}
-
 
 	public static boolean setMOTD(String MOTD, MinecraftServer server) {
         MegaMod.LOGGER.info("Setting MOTD: {}", MOTD);

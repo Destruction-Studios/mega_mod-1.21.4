@@ -1,6 +1,6 @@
 package net.ds.megamod.mixin;
 
-import net.ds.megamod.config.ModConfig;
+import net.ds.megamod.config.MegaModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.EndPortalBlock;
 import net.minecraft.entity.Entity;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EndPortalMixin {
     @Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
     protected void injectEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, CallbackInfo ci) {
-        if (!ModConfig.Config.endPortalsEnabled) {
+        if (!MegaModConfig.getConfig().FeatureToggling.EndEnabled) {
             ci.cancel();
             return;
         }

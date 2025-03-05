@@ -1,9 +1,11 @@
 package net.ds.megamod.mixin;
 
+import net.ds.megamod.MegaMod;
+import net.ds.megamod.combatLog.CombatTagDataEditor;
+import net.ds.megamod.combatLog.IPlayerDataSaver;
 import net.ds.megamod.config.MegaModConfig;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnderEyeItem;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -12,19 +14,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EnderEyeItem.class)
-public class EnderEyeMixin {
+@Mixin(FireworkRocketItem.class)
+public class FireworkRocketItemMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void injectUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (!MegaModConfig.getConfig().FeatureToggling.EnderEyesEnabled) {
+        MegaMod.LOGGER.info("Used Firework");
+        if (!MegaModConfig.getConfig().FeatureToggling.ElytraRocketsEnabled) {
+            MegaMod.LOGGER.info("Rockets disabled");
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;
         }
-    }
-    @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-    public void injectUseOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if (!MegaModConfig.getConfig().FeatureToggling.EnderEyesEnabled) {
+        IPlayerDataSaver player = (IPlayerDataSaver) user;
+        if (CombatTagDataEditor.getCombat(player) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.ElytraRockets) {
+            MegaMod.LOGGER.info("Rockets disabled bc of combat");
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;

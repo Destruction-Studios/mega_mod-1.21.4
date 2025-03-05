@@ -1,7 +1,6 @@
 package net.ds.megamod.combatLog;
 
-import net.ds.megamod.MegaMod;
-import net.ds.megamod.config.ModConfig;
+import net.ds.megamod.config.MegaModConfig;
 import net.minecraft.nbt.NbtCompound;
 
 public class CombatTagDataEditor {
@@ -22,7 +21,7 @@ public class CombatTagDataEditor {
 
     public static void placeInCombat(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
-        nbt.putInt("combatTime", ModConfig.Config.combatTime * 20);
+        nbt.putInt("combatTime", MegaModConfig.getConfig().Combat.CombatDuration * 20);
         nbt.putBoolean("inCombat", true);
     }
 
@@ -30,6 +29,11 @@ public class CombatTagDataEditor {
         NbtCompound nbt = playerDataSaver.getPersistentData();
         nbt.putInt("combatTime", 0);
         nbt.putBoolean("inCombat", false);
+    }
+
+    public static void setLastAttacker(IPlayerDataSaver playerDataSaver, String lastAttacker) {
+        NbtCompound nbt = playerDataSaver.getPersistentData();
+        nbt.putString("lastAttacker", lastAttacker);
     }
 
     public static int getCombatTime(IPlayerDataSaver playerDataSaver) {
@@ -40,5 +44,10 @@ public class CombatTagDataEditor {
     public static boolean getCombat(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
         return nbt.getBoolean("inCombat");
+    }
+
+    public static String getLastAttacker(IPlayerDataSaver playerDataSaver) {
+        NbtCompound nbt = playerDataSaver.getPersistentData();
+        return nbt.getString("lastAttacker");
     }
 }

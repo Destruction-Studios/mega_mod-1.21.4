@@ -5,7 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.ds.megamod.combatLog.IPlayerDataSaver;
 import net.ds.megamod.combatLog.CombatTagDataEditor;
-import net.ds.megamod.config.ModConfig;
+import net.ds.megamod.config.MegaModConfig;
 import net.ds.megamod.util.Utils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -68,9 +68,7 @@ public class ModCommands {
     }
 
     private static int executeReloadConfig(CommandContext<ServerCommandSource> context) {
-        sendFeedback(context, "Reloading Config...", true);
-
-        ModConfig.load();
+        MegaModConfig.manager.load();
 
         sendFeedback(context, "Reloaded Config!", true);
         return 1;
@@ -84,6 +82,7 @@ public class ModCommands {
                 sendFeedback(context, "Set combat for " + player.getDisplayName().getString() + " to " + combatEnabled, true);
                 if (combatEnabled) {
                     CombatTagDataEditor.placeInCombat((IPlayerDataSaver) player);
+                    CombatTagDataEditor.setLastAttacker((IPlayerDataSaver) player, "Console");
                 } else {
                     CombatTagDataEditor.setValues((IPlayerDataSaver) player, 0, true);
                 }
@@ -101,7 +100,8 @@ public class ModCommands {
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.append("In Combat: §a").append(CombatTagDataEditor.getCombat((IPlayerDataSaver) player)).append("§r\n");
-            stringBuilder.append("Combat Time: §c").append(CombatTagDataEditor.getCombatTime((IPlayerDataSaver) player)).append("§r");
+            stringBuilder.append("Combat Time: §c").append(Utils.tickToString(CombatTagDataEditor.getCombatTime((IPlayerDataSaver) player))).append("§r\n");
+            stringBuilder.append("Last Attacker: §9").append(CombatTagDataEditor.getLastAttacker((IPlayerDataSaver) player)).append("§r");
 
             sendFeedback(context, stringBuilder.toString(), false);
         } catch (CommandSyntaxException e) {

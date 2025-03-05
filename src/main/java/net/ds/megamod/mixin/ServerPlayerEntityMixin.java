@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class PlayerLeaveMixin {
+public abstract class ServerPlayerEntityMixin {
     @Inject(method = "onDisconnect", at = @At("HEAD"))
     private void injectDisconnectMethod(CallbackInfo ci) {
         OnPlayerLeave.onPlayerDisconnect((ServerPlayerEntity) (Object) this);

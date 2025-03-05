@@ -5,9 +5,14 @@ import net.ds.megamod.MegaMod;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utils {
+    public static String tickToString(int tick) {
+        return String.format("%.1f", (float) tick / 20);
+    }
+
     public static void getOrCreateConfigFolder() {
         File folder = new File("config/megamod");
         if (!folder.exists()) {
@@ -59,13 +64,24 @@ public class Utils {
         }
         return result;
     }
+
+    public static String arrayListToString(ArrayList<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("[\n");
+        for (String str : list) {
+            stringBuilder.append("\t\t\"").append(str).append("\",\n");
+        }
+        stringBuilder.append("\t]");
+
+        return stringBuilder.toString();
+    }
+
+    public static String reloadWhitelist() { return getOrCreateFile("config/megamod/whitelist.txt");}
     public static String reloadRules() {
         return getOrCreateFile("config/megamod/rules.txt");
     }
     public static String reloadMOTD() {
         return getOrCreateFile("config/megamod/motd.txt");
-    }
-    public static String reloadConfig() {
-        return getOrCreateFile("config/megamod/portal.json");
     }
 }

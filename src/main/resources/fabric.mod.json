@@ -8,7 +8,6 @@
 		"Destruction Studio"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/Destruction-Studios/mega_mod-1.21.4"
 	},
 	"license": "CC0-1.0",
@@ -29,6 +28,7 @@
 		"fabricloader": ">=0.16.10",
 		"minecraft": "~1.21.4",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"fconfiglib": ">=1.1.1"
 	}
 }

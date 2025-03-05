@@ -12,8 +12,9 @@ import java.util.Objects;
 public class OnPlayerLeave {
     public static void onPlayerDisconnect(ServerPlayerEntity player) {
         if (CombatTagDataEditor.getCombat((IPlayerDataSaver) player)) {
+            IPlayerDataSaver dataSaver = (IPlayerDataSaver) player;
 //            Text deathMessage = Text.of(player.getName().toString()+" §ccombat logged while while attacking§r "+Objects.requireNonNull(player.getAttacker()).getName().toString());
-            Text deathMessage = Text.of(player.getDisplayName().getString()+" §c combat logged§r");
+            Text deathMessage = Text.of(player.getDisplayName().getString()+"§c combat logged§r while fighting "+CombatTagDataEditor.getLastAttacker(dataSaver));
             GameRules.BooleanRule gamerule = Objects.requireNonNull(player.getServerWorld().getGameRules().get(GameRules.SHOW_DEATH_MESSAGES));
 
             gamerule.set(false, player.getServer());

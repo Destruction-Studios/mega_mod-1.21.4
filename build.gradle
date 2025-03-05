@@ -28,6 +28,10 @@ repositories {
 		name = "QuiltMC"
 		url = "https://maven.quiltmc.org/repository/release/"
 	}
+	maven {
+		name "JitPack"
+		url "https://jitpack.io"
+	}
 }
 
 dependencies {
@@ -41,6 +45,9 @@ dependencies {
 
 	implementation "org.quiltmc.parsers:json:0.2.1"
 	include "org.quiltmc.parsers:json:0.2.1"
+
+	//Config lib
+	modImplementation "com.github.ForwarD-NerN:fconfiglib:1.1.1"
 }
 
 processResources {
