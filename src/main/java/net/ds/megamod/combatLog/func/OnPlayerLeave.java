@@ -1,6 +1,5 @@
 package net.ds.megamod.combatLog.func;
 
-import net.ds.megamod.MegaMod;
 import net.ds.megamod.combatLog.CombatTagDataEditor;
 import net.ds.megamod.combatLog.IPlayerDataSaver;
 import net.minecraft.server.network.ServerPlayerEntity;

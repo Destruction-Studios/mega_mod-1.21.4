@@ -18,16 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class FireworkRocketItemMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     public void injectUse(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        MegaMod.LOGGER.info("Used Firework");
         if (!MegaModConfig.getConfig().FeatureToggling.ElytraRocketsEnabled) {
-            MegaMod.LOGGER.info("Rockets disabled");
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;
         }
         IPlayerDataSaver player = (IPlayerDataSaver) user;
         if (CombatTagDataEditor.getCombat(player) && MegaModConfig.getConfig().Combat.DisabledWhenInCombat.ElytraRockets) {
-            MegaMod.LOGGER.info("Rockets disabled bc of combat");
             cir.setReturnValue(ActionResult.PASS);
             cir.cancel();
             return;

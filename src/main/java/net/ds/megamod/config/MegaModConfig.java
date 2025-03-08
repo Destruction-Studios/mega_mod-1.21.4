@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class MegaModConfig {
-    public static final int CONFIG_VERSION = 1;
+    public static final int CONFIG_VERSION = 4;
 
     public static ConfigManager<Config, JsonObject> manager = JsonConfigManager
             .builderOf(Config.class)
@@ -31,11 +31,10 @@ public class MegaModConfig {
 
     public static class Config {
         public boolean VillagerDeathMessages = true;
-//        public String _c1 = "Must restart server for max lead distance to update";
-//        @InRangeFloat(min = 5.0f, max = 150.0f)
-//        public float MaxLeadDistance = 10;
+
         public CombatConfig Combat = new CombatConfig();
         public FeatureToggle FeatureToggling = new FeatureToggle();
+        public Trolls Trolls = new Trolls();
 
         public static class CombatConfig {
             @InRangeInt(min = 1, max = 1000)
@@ -45,7 +44,6 @@ public class MegaModConfig {
             public CombatDisabledFeatures DisabledWhenInCombat = new CombatDisabledFeatures();
         }
         public static class CombatDisabledFeatures {
-//            public boolean RiptideTridents = false;
             public boolean ElytraRockets = false;
         }
         public static class FeatureToggle {
@@ -53,6 +51,15 @@ public class MegaModConfig {
             public boolean EndEnabled = true;
             public boolean EnderEyesEnabled = true;
             public boolean ElytraRocketsEnabled = true;
+        }
+        public static class Trolls {
+            public boolean TrollCommandEnabled = false;
+            public int MaxEndermanSearchRadius = 75;
+            public int EndermanToSpawn = 0;
+            public int BabyZombiesToSpawn = 2;
+            public int BabyZombieTotemCount = 0;
+//            public String _c2 = "Give command syntax (minecraft:stick[enchantments:{levels:{knockback:255}}])";
+//            public String BabyZombieWeapon = "";
         }
     }
 }
