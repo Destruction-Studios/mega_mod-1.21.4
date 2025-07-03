@@ -5,12 +5,7 @@
   "mixins": [
     "EnderEyeMixin",
     "EndPortalMixin",
-    "FireworkRocketItemMixin",
-    "ModEntityDamageMixin",
-    "ModEntityDataSaverMixin",
-    "ModServerTickMixin",
-    "NetherPortalMixin",
-    "ServerPlayerEntityMixin"
+    "NetherPortalMixin"
   ],
   "server": [
     "VillagerEntityMixin"
