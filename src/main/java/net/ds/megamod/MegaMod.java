@@ -2,7 +2,6 @@ package net.ds.megamod;
 
 import net.ds.megamod.config.MegaModConfig;
 import net.ds.megamod.event.ServerStartedEvent;
-import net.ds.megamod.event.ServerStoppingEvent;
 import net.ds.megamod.util.Utils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -24,7 +23,6 @@ public class MegaMod implements ModInitializer {
 		MegaModConfig.init();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedEvent());
-		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingEvent());
 
 		ModCommands.init();
 

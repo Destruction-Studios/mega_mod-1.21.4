@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public class MegaModConfig {
-    public static final int CONFIG_VERSION = 4;
+    public static final int CONFIG_VERSION = 5;
 
     public static ConfigManager<Config, JsonObject> manager = JsonConfigManager
             .builderOf(Config.class)
