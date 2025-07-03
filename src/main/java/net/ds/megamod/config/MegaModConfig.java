@@ -31,21 +31,9 @@ public class MegaModConfig {
 
     public static class Config {
         public boolean VillagerDeathMessages = true;
-
-        public CombatConfig Combat = new CombatConfig();
         public FeatureToggle FeatureToggling = new FeatureToggle();
         public Trolls Trolls = new Trolls();
 
-        public static class CombatConfig {
-            @InRangeInt(min = 1, max = 1000)
-            public int CombatDuration = 20;
-            public List<String> CombatTriggerEntities = List.of("player");
-
-            public CombatDisabledFeatures DisabledWhenInCombat = new CombatDisabledFeatures();
-        }
-        public static class CombatDisabledFeatures {
-            public boolean ElytraRockets = false;
-        }
         public static class FeatureToggle {
             public boolean NetherEnabled = true;
             public boolean EndEnabled = true;

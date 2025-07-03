@@ -23,7 +23,7 @@ public abstract class VillagerEntityMixin {
         if (!MegaModConfig.getConfig().VillagerDeathMessages) {
             return;
         }
-        String profession = this.getVillagerData().getProfession().toString();
+        String profession = this.getVillagerData().profession().toString();
 //        if (!Objects.equals(profession, "none")) {
             String output = damageSource.getDeathMessage((LivingEntity) (Object) this).getString();
             MegaMod.getServer().getPlayerManager().broadcast(Text.of(output), false);

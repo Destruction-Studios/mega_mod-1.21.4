@@ -1,31 +1,20 @@
 package net.ds.megamod;
 
-import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.ds.megamod.combatLog.IPlayerDataSaver;
-import net.ds.megamod.combatLog.CombatTagDataEditor;
 import net.ds.megamod.config.MegaModConfig;
 import net.ds.megamod.util.Utils;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.ItemStringReader;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.GiveCommand;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -35,9 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class ModCommands {
 
@@ -98,43 +85,6 @@ public class ModCommands {
         return 1;
     }
 
-    private static int executeSetCombat(CommandContext<ServerCommandSource> context) {
-        try {
-            boolean combatEnabled = BoolArgumentType.getBool(context, "enabled");
-            Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "players");
-            for (ServerPlayerEntity player : players) {
-                sendFeedback(context, "Set combat for " + player.getDisplayName().getString() + " to " + combatEnabled, true);
-                if (combatEnabled) {
-                    CombatTagDataEditor.placeInCombat((IPlayerDataSaver) player);
-                    CombatTagDataEditor.setLastAttacker((IPlayerDataSaver) player, "Console");
-                } else {
-                    CombatTagDataEditor.setValues((IPlayerDataSaver) player, 0, true);
-                }
-            }
-        } catch (CommandSyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        return 1;
-    }
-
-    private static int executeGetCombat(CommandContext<ServerCommandSource> context) {
-        try {
-            ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "player");
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.append("In Combat: §a").append(CombatTagDataEditor.getCombat((IPlayerDataSaver) player)).append("§r\n");
-            stringBuilder.append("Combat Time: §c").append(Utils.tickToString(CombatTagDataEditor.getCombatTime((IPlayerDataSaver) player))).append("§r\n");
-            stringBuilder.append("Last Attacker: §9").append(CombatTagDataEditor.getLastAttacker((IPlayerDataSaver) player)).append("§r");
-
-            sendFeedback(context, stringBuilder.toString(), false);
-        } catch (CommandSyntaxException e) {
-            e.printStackTrace();
-        }
-
-        return 1;
-    }
-
     private static int endermanAnger(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
         ServerPlayerEntity player = EntityArgumentType.getPlayer(context, "target");
         boolean shouldSpawn = BoolArgumentType.getBool(context, "shouldSpawnEndermen");
@@ -179,7 +129,7 @@ public class ModCommands {
         var TrollConfig = MegaModConfig.getConfig().Trolls;
 
         for (int i = 0; i < TrollConfig.BabyZombiesToSpawn; i ++) {
-            var entity = EntityType.ZOMBIE.spawn(player.getServerWorld(), player.getBlockPos(), SpawnReason.COMMAND);
+            var entity = EntityType.ZOMBIE.spawn(player.getWorld(), player.getBlockPos(), SpawnReason.COMMAND);
             if (entity != null) {
                 entity.setCanBreakDoors(true);
                 entity.setBaby(true);
@@ -205,10 +155,6 @@ public class ModCommands {
 
             commandDispatcher.register(CommandManager.literal("megamod")
                     .requires(source -> source.hasPermissionLevel(4))
-                    .then(CommandManager.literal("combat")
-                            .then(CommandManager.literal("set").then(CommandManager.argument("players", EntityArgumentType.players()).then(CommandManager.argument("enabled", BoolArgumentType.bool()).executes(ModCommands::executeSetCombat))))
-                            .then(CommandManager.literal("get").then(CommandManager.argument("player", EntityArgumentType.player()).executes(ModCommands::executeGetCombat)))
-                    )
                     .then(CommandManager.literal("motd")
                             .then(CommandManager.literal("reload").executes(ModCommands::executeReloadMOTD))
                             .then(CommandManager.literal("get").executes(ModCommands::executeGetMOTD))
