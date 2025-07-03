@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Optional;
-
 @Mixin(Entity.class)
 public abstract class ModEntityDataSaverMixin implements IPlayerDataSaver {
     private NbtCompound persistentData;
@@ -32,9 +30,8 @@ public abstract class ModEntityDataSaverMixin implements IPlayerDataSaver {
 
     @Inject(method = "readNbt", at = @At("HEAD"))
     protected void injectRead(NbtCompound nbt, CallbackInfo ci) {
-        if (nbt.contains("combatLog")) {
-            Optional<NbtCompound> comp = nbt.getCompound("combatLog");
-            comp.ifPresent(nbtCompound -> persistentData = nbtCompound);
+        if (nbt.contains("combatLog", 10)) {
+            persistentData = nbt.getCompound("combatLog");
         }
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.9-SNAPSHOT'
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -40,14 +40,14 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+//	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
+//
 	implementation "org.quiltmc.parsers:json:0.2.1"
 	include "org.quiltmc.parsers:json:0.2.1"
-
-	//Config lib
-	modImplementation "com.github.ForwarD-NerN:fconfiglib:1.1.1"
+//
+//	//Config lib
+	modImplementation "com.github.ForwarD-NerN:fconfiglib:${project.config_lib_version}"
 }
 
 processResources {

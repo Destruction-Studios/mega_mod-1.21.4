@@ -3,8 +3,6 @@ package net.ds.megamod.combatLog;
 import net.ds.megamod.config.MegaModConfig;
 import net.minecraft.nbt.NbtCompound;
 
-import java.util.Optional;
-
 public class CombatTagDataEditor {
     public static void setValues(IPlayerDataSaver playerDataSaver, int combatTime, boolean inCombat) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
@@ -14,13 +12,10 @@ public class CombatTagDataEditor {
 
     public static void decreaseCombatTime(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
-        Optional<Integer> combatTime = nbt.getInt("combatTime");
-        if (combatTime.isPresent()) {
-            int value = combatTime.get();
-            if (value > 0) {
-                value--;
-                nbt.putInt("combatTime", value);
-            }
+        int combatTime = nbt.getInt("combatTime");
+        if (combatTime > 0) {
+            combatTime--;
+            nbt.putInt("combatTime", combatTime);
         }
     }
 
@@ -41,17 +36,17 @@ public class CombatTagDataEditor {
         nbt.putString("lastAttacker", lastAttacker);
     }
 
-    public static Optional<Integer> getCombatTime(IPlayerDataSaver playerDataSaver) {
+    public static int getCombatTime(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
         return nbt.getInt("combatTime");
     }
 
-    public static Optional<Boolean> getCombat(IPlayerDataSaver playerDataSaver) {
+    public static boolean getCombat(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
         return nbt.getBoolean("inCombat");
     }
 
-    public static Optional<String> getLastAttacker(IPlayerDataSaver playerDataSaver) {
+    public static String getLastAttacker(IPlayerDataSaver playerDataSaver) {
         NbtCompound nbt = playerDataSaver.getPersistentData();
         return nbt.getString("lastAttacker");
     }
